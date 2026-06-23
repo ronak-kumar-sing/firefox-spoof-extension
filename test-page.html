@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Firefox Spoof Test</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 24px; }
+    .row { margin: 8px 0; }
+    .label { font-weight: bold; display: inline-block; width: 140px; }
+    .firefox { color: green; }
+    .chrome { color: red; }
+  </style>
+</head>
+<body>
+  <h1>Browser Detection Test Page</h1>
+  <p>If the extension is enabled, all values below should show Firefox/Gecko values.</p>
+  <div id="output"></div>
+  <script>
+    const props = [
+      'userAgent',
+      'appVersion',
+      'platform',
+      'vendor',
+      'appCodeName',
+      'appName',
+      'oscpu',
+      'product',
+      'productSub'
+    ];
+    const out = document.getElementById('output');
+    props.forEach(p => {
+      const value = navigator[p] || '(undefined)';
+      const isFirefoxLike = typeof value === 'string' && (value.toLowerCase().includes('firefox') || value.toLowerCase().includes('gecko') || value === '');
+      const cls = isFirefoxLike ? 'firefox' : 'chrome';
+      out.innerHTML += `<div class="row"><span class="label">${p}:</span> <span class="${cls}">${value}</span></div>`;
+    });
+  </script>
+</body>
+</html>

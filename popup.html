@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      width: 220px;
+      padding: 16px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+    }
+    h1 {
+      font-size: 16px;
+      margin: 0 0 12px;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+    }
+    .note {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #666;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Firefox Spoof</h1>
+  <label>
+    <input type="checkbox" id="toggle" />
+    Spoof as Firefox
+  </label>
+  <div class="note">
+    When enabled, this page will report Firefox instead of Chrome. Reload the page after toggling.
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
