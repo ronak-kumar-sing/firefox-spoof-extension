@@ -1,4 +1,28 @@
 const RULESET_ID = "ruleset_1";
+const CONTENT_SCRIPT_ID = "firefox-spoof-main";
+
+async function registerMainWorldScript() {
+  try {
+    await chrome.scripting.unregisterContentScripts({ ids: [CONTENT_SCRIPT_ID] });
+  } catch (e) {
+    // Ignore if it was not registered.
+  }
+
+  try {
+    await chrome.scripting.registerContentScripts([
+      {
+        id: CONTENT_SCRIPT_ID,
+        js: ["injected.js"],
+        matches: ["<all_urls>"],
+        runAt: "document_start",
+        world: "MAIN",
+        allFrames: true
+      }
+    ]);
+  } catch (e) {
+    // Ignore errors on browsers that do not support world: "MAIN".
+  }
+}
 
 async function updateBadge(enabled) {
   try {
@@ -31,10 +55,14 @@ chrome.runtime.onInstalled.addListener(async (details) => {
   if (details.reason === "install") {
     await chrome.storage.local.set({ enabled: true });
   }
+  await registerMainWorldScript();
   await syncEnabledState();
 });
 
-chrome.runtime.onStartup.addListener(syncEnabledState);
+chrome.runtime.onStartup.addListener(async () => {
+  await registerMainWorldScript();
+  await syncEnabledState();
+});
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === "local" && changes.enabled) {
@@ -43,4 +71,5 @@ chrome.storage.onChanged.addListener((changes, area) => {
 });
 
 // Sync immediately in case the service worker was restarted mid-session.
+registerMainWorldScript();
 syncEnabledState();

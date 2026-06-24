@@ -6,7 +6,8 @@ A minimal Chrome extension that makes Chrome identify as Firefox so test portals
 
 - `manifest.json` — Extension manifest (Manifest V3)
 - `background.js` — Service worker that keeps the header-spoofing ruleset in sync with the toggle
-- `content.js` — Injected into every page at `document_start` to spoof `navigator` properties
+- `content.js` — Isolated content script that controls the on/off state
+- `injected.js` — MAIN-world content script registered by the service worker to spoof `navigator` properties without violating page CSPs
 - `rules.json` — Rewrites the outgoing `User-Agent` HTTP header to Firefox
 - `popup.html` / `popup.js` — Toolbar toggle to enable/disable spoofing and update open tabs live
 - `icon.png` — Toolbar icon
@@ -41,4 +42,4 @@ Then open `http://127.0.0.1:8765/test-page.html` in Chrome.
 - The extension spoofs browser identity both in JavaScript (`navigator.userAgent`, `navigator.platform`, etc.) and at the network layer (HTTP `User-Agent` header).
 - Toggling the popup now updates open tabs immediately and turns the HTTP header spoof on/off via the service worker.
 - Some portals also check for `window.InstallTrigger`; this extension adds a minimal stub.
-- If the portal still blocks Chrome, inspect its detection code and add the missing property to `content.js`.
+- If the portal still blocks Chrome, inspect its detection code and add the missing property to `injected.js`.

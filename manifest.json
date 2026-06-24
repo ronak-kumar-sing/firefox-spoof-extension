@@ -3,7 +3,7 @@
   "name": "Firefox Spoof",
   "version": "1.0",
   "description": "Make Chrome identify as Firefox for test portals",
-  "permissions": ["storage", "declarativeNetRequest", "declarativeNetRequestWithHostAccess"],
+  "permissions": ["storage", "scripting", "declarativeNetRequest", "declarativeNetRequestWithHostAccess"],
   "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "popup.html",
